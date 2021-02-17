@@ -8,11 +8,14 @@ ui <- fluidPage(
     titlePanel("Concept Map Creator"),
     sidebarLayout(
         sidebarPanel(
+            width = 5,
             textInput(inputId = "new_node", label = "Node"),
             actionButton(inputId = "add_node", label = "Add Node"),
-            uiOutput("connect_nodes")
+            uiOutput("connect_nodes"),
+            uiOutput("edge_relations")
         ),
         mainPanel(
+            width = 7,
             uiOutput("concept_map") 
         )
     )
@@ -41,27 +44,50 @@ server <- function(input, output) {
         }
     })
     
-    vertices <- reactiveValues()
-    vertices$df <- tibble()
+    edges <- reactiveValues()
+    edges$df <- tibble()
     observeEvent(input$add_vertex,{
-        new_vertex <- tibble(from = input$from, to = input$to)
-        vertices$df <- rbind(vertices$df, new_vertex) %>% distinct()
+        new_vertex <- tibble(from = input$from, to = input$to, relation = "")
+        edges$df <- rbind(edges$df, new_vertex) %>% distinct()
     })
     
+    observeEvent(
+        input$create_relation, {
+            output$concept_map <- renderUI({
+                list(
+                    h2("Concept Map Plotted with {igraph}"),
+                    renderPlot(plot(graph_from_data_frame(edges$df), vertex.label.cex = 2)),
+                    h2("Edges Table"),
+                    renderTable(edges$df)
+                )
+                # ggraph() +
+                #     geom_edge_link() +
+                #     geom_node_point()
+            })
+        })
     
-     observeEvent(
-        input$add_vertex, {
-        output$concept_map <- renderUI({
-            list(
-                h2("Concept Map Plotted with {igraph}"),
-                renderPlot(plot(graph_from_data_frame(vertices$df), vertex.label.cex = 2)),
-                h2("Edges Table"),
-                renderTable(vertices$df)
-            )
-        # ggraph() +
-        #     geom_edge_link() +
-        #     geom_node_point()
+    output$edge_relations <- renderUI({
+        connections <- edges$df %>% 
+            unite(col = "vertex", from, to, sep = "  ->  ") %>% 
+            pull(vertex)
+        list(
+            h3("Add Edge Relationships"),
+            selectInput(inputId = "edge", label = "Select Edge", choices = connections),
+            textInput(inputId = "relation", label = "Add Relation"),
+            actionButton(inputId = "create_relation", label = "Create Relation")
+        )
     })
+    
+    edges <- reactiveValues()
+    edges$df <- tibble()
+    observeEvent(input$create_relation,{
+        edges$df <- edges$df %>% 
+            unite(col = "vertex", from, to, sep = "  ->  ", remove = FALSE) %>% 
+            mutate(relation = case_when(vertex == input$edge ~ input$relation,
+                                        TRUE ~ relation )) %>% 
+            select(-vertex) %>%
+            force()
+        print(edges$df)
     })
 }
 
