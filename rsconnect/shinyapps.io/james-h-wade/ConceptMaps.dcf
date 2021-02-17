@@ -1,0 +1,12 @@
+name: ConceptMaps
+title: ConceptMaps
+username:
+account: james-h-wade
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 3648907
+bundleId: 4232337
+url: https://james-h-wade.shinyapps.io/ConceptMaps/
+when: 1613522034.12697
+asMultiple: FALSE
+asStatic: FALSE
