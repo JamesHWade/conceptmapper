@@ -28,7 +28,6 @@ server <- function(input, output) {
     observeEvent(input$add_node,{
         new_node <- tibble(node = input$new_node)
         nodes$df <- rbind(nodes$df, new_node) %>% distinct()
-        print(nodes$df)
     })
     
     output$connect_nodes <- renderUI({
@@ -67,15 +66,17 @@ server <- function(input, output) {
         })
     
     output$edge_relations <- renderUI({
-        connections <- edges$df %>% 
-            unite(col = "vertex", from, to, sep = "  ->  ") %>% 
-            pull(vertex)
-        list(
-            h3("Add Edge Relationships"),
-            selectInput(inputId = "edge", label = "Select Edge", choices = connections),
-            textInput(inputId = "relation", label = "Add Relation"),
-            actionButton(inputId = "create_relation", label = "Create Relation")
-        )
+        if(nrow(edges$df > 0)) {
+            connections <- edges$df %>% 
+                unite(col = "vertex", from, to, sep = "  ->  ") %>% 
+                pull(vertex)
+            list(
+                h3("Add Edge Relationships"),
+                selectInput(inputId = "edge", label = "Select Edge", choices = connections),
+                textInput(inputId = "relation", label = "Add Relation"),
+                actionButton(inputId = "create_relation", label = "Create Relation")
+            )
+        }
     })
     
     edges <- reactiveValues()
@@ -87,7 +88,6 @@ server <- function(input, output) {
                                         TRUE ~ relation )) %>% 
             select(-vertex) %>%
             force()
-        print(edges$df)
     })
 }
 
