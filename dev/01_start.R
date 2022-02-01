@@ -20,12 +20,12 @@
 ## 
 golem::fill_desc(
   pkg_name = "conceptmapper", # The Name of the package containing the App 
-  pkg_title = "PKG_TITLE", # The Title of the package containing the App 
-  pkg_description = "PKG_DESC.", # The Description of the package containing the App 
-  author_first_name = "AUTHOR_FIRST", # Your First Name
-  author_last_name = "AUTHOR_LAST", # Your Last Name
-  author_email = "AUTHOR@MAIL.COM", # Your Email
-  repo_url = NULL # The URL of the GitHub Repo (optional) 
+  pkg_title = "Concept Mapper", # The Title of the package containing the App 
+  pkg_description = "Create concepts map using shiny.", # The Description of the package containing the App 
+  author_first_name = "James", # Your First Name
+  author_last_name = "Wade", # Your Last Name
+  author_email = "github@jameshwade.com", # Your Email
+  repo_url = "https://github.com/JamesHWade/conceptmapper" # The URL of the GitHub Repo (optional) 
 )     
 
 ## Set {golem} options ----
