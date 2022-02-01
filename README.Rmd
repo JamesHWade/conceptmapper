@@ -14,6 +14,7 @@ knitr::opts_chunk$set(
 # Concept Maps
 
 <!-- badges: start -->
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
 The goal of concept_maps is to create graph networks with a simple user interface. The current implementation is quite minimal.
