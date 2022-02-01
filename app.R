@@ -1,8 +1,8 @@
 library(shiny)
 library(bslib)
 library(tidyverse)
-# library(igraph)
-library(visNetwork)
+library(igraph)
+# library(visNetwork)
 
 ui <- fluidPage(
     theme = bs_theme(bootswatch = "yeti"),
@@ -10,8 +10,6 @@ ui <- fluidPage(
     sidebarLayout(
         sidebarPanel(
             width = 5,
-            textInput(inputId = "new_node", label = "Node"),
-            actionButton(inputId = "add_node", label = "Add Node"),
             uiOutput("connect_nodes"),
             uiOutput("edge_relations")
         ),
@@ -56,8 +54,8 @@ server <- function(input, output) {
             output$concept_map <- renderUI({
                 list(
                     h2("Concept Map Plotted with {igraph}"),
-                    renderPlot(visNetwork(nodes$df, edges$df, width = "100%")),
-                    # renderPlot(plot(graph_from_data_frame(edges$df), vertex.label.cex = 2)),
+                    # renderPlot(visNetwork(nodes$df, edges$df, width = "100%")),
+                    renderPlot(plot(graph_from_data_frame(edges$df), vertex.label.cex = 2)),
                     h2("Edges Table"),
                     renderTable(edges$df)
                 )

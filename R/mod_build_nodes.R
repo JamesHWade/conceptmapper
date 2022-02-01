@@ -10,6 +10,8 @@
 mod_build_nodes_ui <- function(id){
   ns <- NS(id)
   tagList(
+    textInput(inputId = ns("new_node"), label = "Node"),
+    actionButton(inputId = ns("add_node"), label = "Add Node"),
  
   )
 }
