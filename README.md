@@ -12,5 +12,5 @@ coverage](https://codecov.io/gh/JamesHWade/concept_maps/branch/main/graph/badge.
 [![R-CMD-check](https://github.com/JamesHWade/concept_maps/workflows/R-CMD-check/badge.svg)](https://github.com/JamesHWade/concept_maps/actions)
 <!-- badges: end -->
 
-The goal of concept_maps is to create graph networks with a simple user
-interface. The current implementation is quite minimal.
+The goal of `{conceptmapper}` is to create graph networks with a simple
+user interface. The current implementation is quite minimal.

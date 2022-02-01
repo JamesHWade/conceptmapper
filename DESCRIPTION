@@ -13,6 +13,7 @@ Imports:
     htmltools,
     igraph,
     processx,
+    rlang,
     shiny (>= 1.7.1)
 Encoding: UTF-8
 LazyData: true
