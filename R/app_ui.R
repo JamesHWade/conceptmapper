@@ -10,7 +10,9 @@ app_ui <- function(request) {
     golem_add_external_resources(),
     # Your application UI logic 
     fluidPage(
-      h1("conceptmapper")
+      h1("conceptmapper"),
+      mod_build_nodes_ui("build_nodes_ui_1"),
+      mod_build_igraph_ui("build_links_ui_1")
     )
   )
 }

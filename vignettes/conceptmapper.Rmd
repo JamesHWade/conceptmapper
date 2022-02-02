@@ -39,7 +39,18 @@ nodes <- tibble::tibble(
   id = letters,
   group = "A group")
 
-visNetwork::visNetwork(nodes, edges, width = "100%")
+# visNetwork::visNetwork(nodes, edges, width = "100%")
+
+# load the package
+library(igraph)
+
+# your code
+df <- data.frame(a = c(0,1,2,3,4),b = c(3,4,5,6,7))
+nod <- data.frame(node = c(0:7),wt = c(1:8))
+pg <- graph_from_data_frame(d = df, vertices = nod,directed = F)
+
+# plot function with edge.label added
+plot(pg, edge.label = nod$wt)
 ```
 ```{r}
 edges <- data.frame(from = sample(1:10,8), to = sample(1:10, 8),
