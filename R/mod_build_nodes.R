@@ -10,12 +10,12 @@
 mod_build_nodes_ui <- function(id){
   ns <- NS(id)
   tagList(
-    uiOutput(ns("node_prompt")),
+    h3("1. Add nodes"),
     textInput(inputId = ns("new_node"), label = "Node"),
     actionButton(inputId = ns("add_node"), label = "Add Node"),
+    uiOutput(ns("node_prompt")),
     uiOutput(ns("node_from")),
-    uiOutput(ns("node_to")),
-    tableOutput(ns("edge_table"))
+    uiOutput(ns("connect_nodes")),
   )
 }
 
@@ -28,26 +28,26 @@ mod_build_nodes_server <- function(id, r){
     r$nodes <- NULL 
     r$graph_tbl <- tibble::tibble()
     output$node_prompt <- renderUI({
-      if (length(r$nodes) < 2) p("Add more nodes.")
+      if (length(r$nodes) == 1) h3("Add another node.")
     })
-    observeEvent(input$add_node,
-                 r$nodes <- unique(c(r$nodes, input$new_node)))
-    output$nodes <- renderPrint(r$nodes)
     
-    output$node_from <- renderUI({
+    # add notes to r$notes and only keep unique ones, then sort them
+    observeEvent(input$add_node, 
+                 r$nodes <- sort(unique(c(r$nodes, input$new_node))))
+    
+    output$connect_nodes <- renderUI({
       req(length(r$nodes) > 1)
-      selectInput(inputId = ns("from"), label = "From", 
-                  choices = r$nodes)
-    })
-    
-    output$node_to <- renderUI({
-      req(input$from)
-      to_choices <- r$nodes[-which(r$nodes == input$from)]
       list(
+        hr(),
+        h3("2. Link nodes"),
+        selectInput(inputId = ns("from"), label = "From",
+                    choices = r$nodes), 
         selectInput(inputId = ns("to"), label = "To", 
-                    choices = to_choices),
+                    choices = r$nodes,
+                    selected = r$nodes[2]),
         textInput(ns("link_name"), label = "Describe Link"),
-        actionButton(inputId = ns("add_edge"), label = "Make Connection")
+        textInput(ns("link_group"), label = "Describe Group (Optional)"),
+        actionButton(inputId = ns("add_edge"), label = "Link")
       )
     })
     
@@ -59,11 +59,12 @@ mod_build_nodes_server <- function(id, r){
     
     observeEvent(input$add_edge,{
       req(iv$is_valid)
+      group <- ifelse(is.null(input$link_group), "", input$link_group)
       new_connection <- tibble::tibble(from = input$from,
                                        to = input$to,
-                                       label = input$link_name)
+                                       label = input$link_name,
+                                       group = group)
       r$graph_tbl <- dplyr::bind_rows(r$graph_tbl, new_connection)
-      output$graph_tbl <- renderTable(r$graph_tbl)
     })
     
     

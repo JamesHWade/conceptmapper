@@ -9,10 +9,21 @@ app_ui <- function(request) {
     # Leave this function for adding external resources
     golem_add_external_resources(),
     # Your application UI logic 
-    fluidPage(
-      h1("conceptmapper"),
-      mod_build_nodes_ui("build_nodes_ui_1"),
-      mod_build_igraph_ui("build_links_ui_1")
+    navbarPage(
+      title = "Concept Mapper",
+      theme = bslib::bs_theme(version = 5, bootswatch = "cosmo"),
+      tabPanel(
+        title = "Build Concept Map",
+        sidebarLayout(
+          sidebarPanel(
+            mod_build_nodes_ui("build_nodes_ui_1"),
+          ),
+          mainPanel(
+            mod_build_igraph_ui("build_links_ui_1")
+            
+          )
+        )
+      )
     )
   )
 }
@@ -30,7 +41,7 @@ golem_add_external_resources <- function(){
   add_resource_path(
     'www', app_sys('app/www')
   )
- 
+  
   tags$head(
     favicon(),
     bundle_resources(
