@@ -1,6 +1,6 @@
 Package: conceptmapper
 Title: Concept Mapper
-Version: 0.0.0.9000
+Version: 0.0.1
 Authors@R: person('James', 'Wade', email = 'github@jameshwade.com', role = c('cre', 'aut'))
 Description: Create concepts map using shiny.
 License: MIT + file LICENSE
