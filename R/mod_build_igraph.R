@@ -32,7 +32,7 @@ mod_build_igraph_server <- function(id, r) {
       # create igraph
       map_igraph <- igraph::graph_from_data_frame(r$graph_tbl)
       # convert igraph to visNetwork object
-      visNetwork::visIgraph(map_igraph, physics = TRUE)
+      visNetwork::visIgraph(map_igraph, physics = FALSE)
     })
     
     # create datatable from r$graph_tbl
@@ -41,8 +41,7 @@ mod_build_igraph_server <- function(id, r) {
       req(nrow(r$graph_tbl) > 0)
       DT::datatable(
         r$graph_tbl,
-        extensions = 'Buttons',
-        options = list(dom = "Bt",
+        options = list(dom = "t",
                        buttons = "csv",
                        ordering = FALSE,
                        pageLength = 20),

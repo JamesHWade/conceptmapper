@@ -89,3 +89,39 @@ nodes <- data.frame(id = 1:10, group = c("A", "B"))
 visNetwork::visNetwork(nodes, edges, height = "500px", width = "100%")
 ```
 
+```{r}
+find_redundant_edges <- function(data) {
+  edges_to_merge <- 
+    data %>%
+    dplyr::group_by(from, label) %>%
+    dplyr::summarize(count = n(), .groups = "drop") %>%
+    dplyr::filter(count > 1) %>% 
+    left_join(data)
+  
+  untouched <- dplyr::anti_join(data, edges_to_merge)
+  
+  new_links1 <- edges_to_merge %>%
+    select(-c(to, count)) %>% 
+    rename(to = label)
+  
+  new_links2 <- edges_to_merge %>%
+    dplyr::select(-c(from, count)) %>% 
+    dplyr::rename(from = label)
+  
+  new_links <- dplyr::bind_rows(new_links1, new_links2) %>% 
+    mutate(label = NA)
+  
+  dplyr::bind_rows(untouched, new_links)
+}
+
+# readr::write_csv(find_redundant_edges(a), file = "~/Downloads/test.csv")
+
+merge_redundant_edges <- function(data){
+  extra_edges <- find_redundant_edges(data)
+  
+  data %>%
+      dplyr::filter(from %in% extra_edges$from,
+                    label %in% extra_edges$label)
+}
+```
+

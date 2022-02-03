@@ -17,6 +17,8 @@ app_ui <- function(request) {
         sidebarLayout(
           sidebarPanel(
             mod_build_nodes_ui("build_nodes_ui_1"),
+            hr(),
+            mod_upload_concept_map_ui("upload_concept_map_ui_1")
           ),
           mainPanel(
             mod_build_igraph_ui("build_links_ui_1")

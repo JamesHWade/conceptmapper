@@ -10,7 +10,7 @@
 mod_build_nodes_ui <- function(id){
   ns <- NS(id)
   tagList(
-    h3("1. Add nodes"),
+    h3("Add nodes"),
     textInput(inputId = ns("new_node"), label = "Node"),
     actionButton(inputId = ns("add_node"), label = "Add Node"),
     uiOutput(ns("node_prompt")),
@@ -39,7 +39,7 @@ mod_build_nodes_server <- function(id, r){
       req(length(r$nodes) > 1)
       list(
         hr(),
-        h3("2. Link nodes"),
+        h3("Link nodes"),
         selectInput(inputId = ns("from"), label = "From",
                     choices = r$nodes), 
         selectInput(inputId = ns("to"), label = "To", 
