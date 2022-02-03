@@ -32,7 +32,7 @@ mod_build_igraph_server <- function(id, r) {
       # create igraph
       map_igraph <- igraph::graph_from_data_frame(r$graph_tbl)
       # convert igraph to visNetwork object
-      visNetwork::visIgraph(map_igraph, physics = FALSE)
+      visNetwork::visIgraph(map_igraph, physics = TRUE)
     })
     
     # create datatable from r$graph_tbl
