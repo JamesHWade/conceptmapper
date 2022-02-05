@@ -113,7 +113,7 @@ find_redundant_edges <- function(data) {
   dplyr::bind_rows(untouched, new_links) %>% dplyr::distinct()
 }
 
-data <-  readr::read_csv("~/Downloads/2022-02-03_concept-map.csv")
+# data <-  readr::read_csv("~/Downloads/2022-02-03_concept-map.csv")
 
 plot_cleaned_visnetwork <- function(data){
   
@@ -128,6 +128,5 @@ plot_cleaned_visnetwork <- function(data){
   visNetwork::visNetwork(nodes = nodes, edges = edges, physics = TRUE)
 }
 
-plot_cleaned_visnetwork(data)
 ```
 

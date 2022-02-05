@@ -4,8 +4,6 @@
 #'
 #' @return
 #' @export
-#'
-#' @examples
 merge_edges <- function(data) {
   edges_to_merge <- 
     data %>%
@@ -36,8 +34,6 @@ merge_edges <- function(data) {
 #'
 #' @return
 #' @export
-#'
-#' @examples
 plot_cleaned_visnetwork <- function(data){
   
   edges <- merge_edges(data) %>%
