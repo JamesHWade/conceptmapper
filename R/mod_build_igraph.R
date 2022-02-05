@@ -12,8 +12,7 @@ mod_build_igraph_ui <- function(id) {
   tagList(
     h3("Concept Map"),
     visNetwork::visNetworkOutput(ns("concept_map")),
-    h3("Concept Map Table"),
-    p("Note: This table is editable."),
+    uiOutput(ns("table_heading")),
     DT::dataTableOutput(ns("graph_tbl"))
   )
 }
@@ -21,7 +20,7 @@ mod_build_igraph_ui <- function(id) {
 #' build_links Server Functions
 #'
 #' @noRd
-mod_build_igraph_server <- function(id, r) {
+mod_build_igraph_server <- function(id, r, parent) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
     
@@ -29,10 +28,8 @@ mod_build_igraph_server <- function(id, r) {
     output$concept_map <- visNetwork::renderVisNetwork({
       # check that r$graph_tbl has data
       req(nrow(r$graph_tbl) > 0)
-      # create igraph
-      map_igraph <- igraph::graph_from_data_frame(r$graph_tbl)
-      # convert igraph to visNetwork object
-      visNetwork::visIgraph(map_igraph, physics = TRUE)
+      # plot visNetwork
+      plot_cleaned_visnetwork(r$graph_tbl)
     })
     
     # create datatable from r$graph_tbl
@@ -48,6 +45,15 @@ mod_build_igraph_server <- function(id, r) {
         editable = T
       )
     })
+    
+    output$table_heading <- renderUI({
+      req(nrow(r$graph_tbl) > 0)
+      list(
+        h3("Concept Map Table"),
+        p("Note: This table is editable.")
+      )
+    })
+    
     observeEvent(input$graph_tbl_cell_edit, {
       r$graph_tbl <- DT::editData(data = r$graph_tbl,
                                   info = input$graph_tbl_cell_edit)

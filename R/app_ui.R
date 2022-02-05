@@ -21,8 +21,7 @@ app_ui <- function(request) {
             mod_upload_concept_map_ui("upload_concept_map_ui_1")
           ),
           mainPanel(
-            mod_build_igraph_ui("build_links_ui_1")
-            
+            mod_build_igraph_ui("build_igraph_ui_1")
           )
         )
       )

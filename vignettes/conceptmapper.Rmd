@@ -55,29 +55,29 @@ plot(pg, edge.label = nod$wt)
 ```{r}
 edges <- data.frame(from = sample(1:10,8), to = sample(1:10, 8),
                     
-  # add labels on edges                  
-  label = paste("Edge", 1:8),
-  
-  # length
-  length = c(100,500),
-  
-  # width
-  width = c(4,1),
-  
-  # arrows
-  arrows = c("to", "from", "middle", "middle;to"),
-  
-  # dashes
-  dashes = c(TRUE, FALSE),
-  
-  # tooltip (html or character)
-  title = paste("Edge", 1:8),
-  
-  # smooth
-  smooth = c(FALSE, TRUE),
-  
-  # shadow
-  shadow = c(FALSE, TRUE, FALSE, TRUE)) 
+                    # add labels on edges                  
+                    label = paste("Edge", 1:8),
+                    
+                    # length
+                    length = c(100,500),
+                    
+                    # width
+                    width = c(4,1),
+                    
+                    # arrows
+                    arrows = c("to", "from", "middle", "middle;to"),
+                    
+                    # dashes
+                    dashes = c(TRUE, FALSE),
+                    
+                    # tooltip (html or character)
+                    title = paste("Edge", 1:8),
+                    
+                    # smooth
+                    smooth = c(FALSE, TRUE),
+                    
+                    # shadow
+                    shadow = c(FALSE, TRUE, FALSE, TRUE)) 
 
 # head(edges)
 #  from to  label length    arrows dashes  title smooth shadow
@@ -94,34 +94,40 @@ find_redundant_edges <- function(data) {
   edges_to_merge <- 
     data %>%
     dplyr::group_by(from, label) %>%
-    dplyr::summarize(count = n(), .groups = "drop") %>%
+    dplyr::summarize(count = dplyr::n(), .groups = "drop") %>%
     dplyr::filter(count > 1) %>% 
-    left_join(data)
+    dplyr::left_join(data)
   
   untouched <- dplyr::anti_join(data, edges_to_merge)
   
   new_links1 <- edges_to_merge %>%
-    select(-c(to, count)) %>% 
-    rename(to = label)
+    dplyr::select(-count) %>% 
+    dplyr::mutate(to = label)
   
   new_links2 <- edges_to_merge %>%
     dplyr::select(-c(from, count)) %>% 
     dplyr::rename(from = label)
   
-  new_links <- dplyr::bind_rows(new_links1, new_links2) %>% 
-    mutate(label = NA)
+  new_links <- dplyr::bind_rows(new_links1, new_links2)
   
-  dplyr::bind_rows(untouched, new_links)
+  dplyr::bind_rows(untouched, new_links) %>% dplyr::distinct()
 }
 
-# readr::write_csv(find_redundant_edges(a), file = "~/Downloads/test.csv")
+data <-  readr::read_csv("~/Downloads/2022-02-03_concept-map.csv")
 
-merge_redundant_edges <- function(data){
-  extra_edges <- find_redundant_edges(data)
+plot_cleaned_visnetwork <- function(data){
   
-  data %>%
-      dplyr::filter(from %in% extra_edges$from,
-                    label %in% extra_edges$label)
+  edges <- find_redundant_edges(data) %>%
+    dplyr::distinct() %>% 
+    dplyr::mutate(arrows = ifelse(to %in% label, NA, "to"))
+  
+  nodes <- tibble::tibble(id = unique(c(edges$from, edges$to))) %>% 
+    dplyr::mutate(label = ifelse(id %in% edges$label, NA, id),
+                  shape = ifelse(id %in% edges$label, "text", "ellipse"))
+  
+  visNetwork::visNetwork(nodes = nodes, edges = edges, physics = TRUE)
 }
+
+plot_cleaned_visnetwork(data)
 ```
 
