@@ -96,7 +96,8 @@ find_redundant_edges <- function(data) {
     dplyr::group_by(from, label) %>%
     dplyr::summarize(count = dplyr::n(), .groups = "drop") %>%
     dplyr::filter(count > 1) %>% 
-    dplyr::left_join(data)
+    dplyr::left_join(data) %>% 
+    dplyr::mutate(label = stringr::str_c(to, label))
   
   untouched <- dplyr::anti_join(data, edges_to_merge)
   

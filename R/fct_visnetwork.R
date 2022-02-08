@@ -15,10 +15,12 @@ merge_edges <- function(data) {
   untouched <- dplyr::anti_join(data, edges_to_merge)
   
   new_links1 <- edges_to_merge %>%
-    dplyr::select(-count) %>% 
+    dplyr::mutate(label = stringr::str_c(";;", from, ";;", label)) %>% 
+    dplyr::select(-count) %>%
     dplyr::mutate(to = label)
   
   new_links2 <- edges_to_merge %>%
+    dplyr::mutate(label = stringr::str_c(";;", from, ";;", label)) %>%
     dplyr::select(-c(from, count)) %>% 
     dplyr::rename(from = label)
   
@@ -31,10 +33,11 @@ merge_edges <- function(data) {
 #' Plot visNetwork with Merged Edges
 #'
 #' @param data (dataframe) A table created from, to, & label columns
+#' @param physics (boolean) Determines whether to use physics engine
 #'
 #' @return
 #' @export
-plot_cleaned_visnetwork <- function(data){
+plot_cleaned_visnetwork <- function(data, physics = TRUE){
   
   edges <- merge_edges(data) %>%
     dplyr::distinct() %>% 
@@ -44,5 +47,9 @@ plot_cleaned_visnetwork <- function(data){
     dplyr::mutate(label = ifelse(id %in% edges$label, NA, id),
                   shape = ifelse(id %in% edges$label, "text", "ellipse"))
   
-  visNetwork::visNetwork(nodes = nodes, edges = edges, physics = TRUE)
+  edges <- edges %>% 
+    dplyr::mutate(label = stringr::str_remove(label, ";;[:graph:]+;;"))
+  
+  visNetwork::visNetwork(nodes = nodes, edges = edges, physics = physics) %>% 
+    visNetwork::visOptions(collapse = TRUE)
 }

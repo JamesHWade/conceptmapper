@@ -15,11 +15,11 @@ mod_build_nodes_ui <- function(id){
                    choices = NULL,
                    options = list(create = TRUE,
                                   placeholder = "Add a concept")),
+    textInput(ns("link_name"), label = "Describe Link"),
     selectizeInput(inputId = ns("to"), label = "To",
                    choices = NULL,
                    options = list(create = TRUE,
                                   placeholder = "Add a concept")),
-    textInput(ns("link_name"), label = "Describe Link"),
     textInput(ns("link_group"), label = "Describe Group (Optional)"),
     actionButton(inputId = ns("add_edge"), label = "Link")
   )
