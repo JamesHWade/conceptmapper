@@ -4,13 +4,15 @@
 \alias{plot_cleaned_visnetwork}
 \title{Plot visNetwork with Merged Edges}
 \usage{
-plot_cleaned_visnetwork(data)
+plot_cleaned_visnetwork(data, physics = TRUE)
 }
 \arguments{
 \item{data}{(dataframe) A table created from, to, & label columns}
+
+\item{physics}{(boolean) Determines whether to use physics engine}
 }
 \value{
-
+visNetwork object
 }
 \description{
 Plot visNetwork with Merged Edges

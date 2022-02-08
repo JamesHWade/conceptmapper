@@ -11,7 +11,7 @@ app_ui <- function(request) {
     # Your application UI logic 
     navbarPage(
       title = "Concept Mapper",
-      theme = bslib::bs_theme(version = 5, bootswatch = "darkly"),
+      theme = bslib::bs_theme(version = 5, bootswatch = "minty"),
       tabPanel(
         title = "Build Concept Map",
         sidebarLayout(

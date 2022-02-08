@@ -21,6 +21,7 @@ Imports:
     rlang,
     shiny (>= 1.7.1),
     shinyvalidate,
+    stringr,
     tibble,
     visNetwork
 Encoding: UTF-8

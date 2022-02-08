@@ -10,7 +10,7 @@ merge_edges(data)
 \item{data}{(dataframe) A table created from, to, & label columns}
 }
 \value{
-
+tibble
 }
 \description{
 Merge Duplicate Concept Map Edges

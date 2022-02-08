@@ -2,7 +2,7 @@
 #'
 #' @param data (dataframe) A table created from, to, & label columns
 #'
-#' @return
+#' @return tibble
 #' @export
 merge_edges <- function(data) {
   edges_to_merge <- 
@@ -29,13 +29,12 @@ merge_edges <- function(data) {
   dplyr::bind_rows(untouched, new_links) %>% dplyr::distinct()
 }
 
-
 #' Plot visNetwork with Merged Edges
 #'
 #' @param data (dataframe) A table created from, to, & label columns
 #' @param physics (boolean) Determines whether to use physics engine
 #'
-#' @return
+#' @return visNetwork object
 #' @export
 plot_cleaned_visnetwork <- function(data, physics = TRUE){
   
